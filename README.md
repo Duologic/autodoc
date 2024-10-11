@@ -55,12 +55,6 @@ findRootObject(ast)
 getCommentBeforeLine(lineNr)
 ```
 
-### func object
-
-```
-object(object, parents=[], depth)
-```
-
 ### func render
 
 ```
@@ -83,5 +77,11 @@ renderFieldFunction(field, parents, depth)
 
 ```
 renderFunction(name, signature, docstring, depth)
+```
+
+### func renderObject
+
+```
+renderObject(object, parents=[], depth)
 ```
 

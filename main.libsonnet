@@ -34,7 +34,7 @@ function(file) {
     local object = self.findRootObject(self.parsed);
     std.join(
       '\n',
-      self.object(object, depth=depth + 1),
+      self.renderObject(object, depth=depth + 1),
     ),
 
   findRootObject(ast):
@@ -44,7 +44,7 @@ function(file) {
     then self.findRootObject(ast.expr)
     else error 'no object found',
 
-  object(object, parents=[], depth):
+  renderObject(object, parents=[], depth):
     local fields =
       self.documentableFields(object);
 
@@ -89,7 +89,7 @@ function(file) {
           else if field.expr.type == 'anonymous_function'
           then self.renderAnonymousFunction(field, parents, depth + 1)
           else if field.expr.type == 'object'
-          then self.object(field.expr, parents + [self.fieldName(field)], depth + 1)
+          then self.renderObject(field.expr, parents + [self.fieldName(field)], depth + 1)
           else error 'unexpected field type'
         ),
       sortedFields,
