@@ -33,6 +33,7 @@ local lexer = import './lexer.libsonnet';
 
     parseExpr(index, endTokens, inObject):
       local token = lexicon[index];
+      local lineMixin = { line:: lexicon[index][2].line };
 
       local expr =
         if token[0] == 'IDENTIFIER'
@@ -76,6 +77,7 @@ local lexer = import './lexer.libsonnet';
         then obj
         else
           local token = lexicon[obj.cursor];
+          local lineMixin = { line:: lexicon[obj.cursor][2].line };
           local expr =
             if token[1] == '.'
             then self.parseFieldaccess(obj, endTokens, inObject)
@@ -92,9 +94,9 @@ local lexer = import './lexer.libsonnet';
             else if token[1] == 'tailstrict'
             then self.parseTailstrict(obj, endTokens, inObject)
             else error 'Unexpected token: "%s"' % std.toString(token) + std.toString(endTokens);
-          parseRemainder(expr);
+          parseRemainder(expr + lineMixin);
 
-      parseRemainder(expr),
+      parseRemainder(expr + lineMixin),
 
     parseIdentifier(index, endTokens, inObject):
       local token = lexicon[index];
@@ -285,6 +287,7 @@ local lexer = import './lexer.libsonnet';
         type: 'object',
         members: members,
         cursor:: cursor + 1,
+        line:: lexicon[index][2].line,
       },
 
     parseArray(index, endTokens, inObject):
