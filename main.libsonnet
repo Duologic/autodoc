@@ -34,7 +34,7 @@ function(file) {
     local object = self.findRootObject(self.parsed);
     std.join(
       '\n',
-      self.object(object, depth=depth),
+      self.object(object, depth=depth + 1),
     ),
 
   findRootObject(ast):
@@ -44,7 +44,7 @@ function(file) {
     then self.findRootObject(ast.expr)
     else error 'no object found',
 
-  object(object, parents=[], depth=1):
+  object(object, parents=[], depth):
     local fields =
       self.documentableFields(object);
 

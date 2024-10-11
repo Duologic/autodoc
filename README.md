@@ -5,9 +5,9 @@ This library attempts to generate docs for jsonnet code.
 > [!CAUTION]
 > This is an experimental library.
 
-# Functions
+## Functions
 
-## func documentableFields
+### func documentableFields
 
 ```
 documentableFields(object)
@@ -16,7 +16,7 @@ documentableFields(object)
 Find fields that can be documented.
 This essentially filters out calculated fields in the form of `[<expr>]`.
 
-## func fieldName
+### func fieldName
 
 ```
 fieldName(field)
@@ -25,61 +25,61 @@ fieldName(field)
 Get the field name, this assumes fieldname.type is either `string` or `id`.
 Use `documentableFields()` to filter these out.
 
-## func filterAnonymousFunctionFields
+### func filterAnonymousFunctionFields
 
 ```
 filterAnonymousFunctionFields(fields)
 ```
 
-## func filterFunctionFields
+### func filterFunctionFields
 
 ```
 filterFunctionFields(fields)
 ```
 
-## func filterObjectFields
+### func filterObjectFields
 
 ```
 filterObjectFields(fields)
 ```
 
-## func findRootObject
+### func findRootObject
 
 ```
 findRootObject(ast)
 ```
 
-## func getCommentBeforeLine
+### func getCommentBeforeLine
 
 ```
 getCommentBeforeLine(lineNr)
 ```
 
-## func object
+### func object
 
 ```
-object(object, parents=[], depth=1)
+object(object, parents=[], depth)
 ```
 
-## func render
+### func render
 
 ```
 render(depth=0)
 ```
 
-## func renderAnonymousFunction
+### func renderAnonymousFunction
 
 ```
 renderAnonymousFunction(field, parents, depth)
 ```
 
-## func renderFieldFunction
+### func renderFieldFunction
 
 ```
 renderFieldFunction(field, parents, depth)
 ```
 
-## func renderFunction
+### func renderFunction
 
 ```
 renderFunction(name, signature, docstring, depth)
