@@ -33,7 +33,6 @@ local lexer = import './lexer.libsonnet';
 
     parseExpr(index, endTokens, inObject):
       local token = lexicon[index];
-      local lineMixin = { line:: lexicon[index][2].line };
 
       local expr =
         if token[0] == 'IDENTIFIER'
@@ -77,7 +76,6 @@ local lexer = import './lexer.libsonnet';
         then obj
         else
           local token = lexicon[obj.cursor];
-          local lineMixin = { line:: lexicon[obj.cursor][2].line };
           local expr =
             if token[1] == '.'
             then self.parseFieldaccess(obj, endTokens, inObject)
@@ -94,29 +92,24 @@ local lexer = import './lexer.libsonnet';
             else if token[1] == 'tailstrict'
             then self.parseTailstrict(obj, endTokens, inObject)
             else error 'Unexpected token: "%s"' % std.toString(token) + std.toString(endTokens);
-          parseRemainder(expr + lineMixin);
+          parseRemainder(expr + { location:: lexicon[obj.cursor][2] });
 
-      parseRemainder(expr + lineMixin),
+      parseRemainder(expr + { location:: lexicon[index][2] }),
 
     parseIdentifier(index, endTokens, inObject):
       local token = lexicon[index];
       local tokenValue = token[1];
-      local literals = {
-        'null': 'null',
-        'true': 'true',
-        'false': 'false',
-        'self': 'self',
-        '$': '$',
+      local tokenTypes = {
+        'true': 'boolean',
+        'false': 'boolean',
+        'null': 'literal',
+        'self': 'literal',
+        '$': 'literal',
       };
-      if std.member(std.objectFields(literals), tokenValue)
-      then {
-        type: 'literal',
-        literal: literals[tokenValue],
-        cursor:: index + 1,
-      }
-      else {
-        type: 'id',
-        id: tokenValue,
+      local type = std.get(tokenTypes, tokenValue, 'id');
+      {
+        type: type,
+        [type]: tokenValue,
         cursor:: index + 1,
       },
 
@@ -287,7 +280,6 @@ local lexer = import './lexer.libsonnet';
         type: 'object',
         members: members,
         cursor:: cursor + 1,
-        line:: lexicon[index][2].line,
       },
 
     parseArray(index, endTokens, inObject):
@@ -678,11 +670,14 @@ local lexer = import './lexer.libsonnet';
 
     parseMember(index, endTokens, inObject):
       local token = lexicon[index];
-      if token[1] == 'local'
-      then self.parseObjectLocal(index, endTokens, inObject)
-      else if token[1] == 'assert'
-      then self.parseAssertion(index, endTokens, inObject)
-      else self.parseField(index, endTokens, inObject),
+      (
+        if token[1] == 'local'
+        then self.parseObjectLocal(index, endTokens, inObject)
+        else if token[1] == 'assert'
+        then self.parseAssertion(index, endTokens, inObject)
+        else self.parseField(index, endTokens, inObject)
+      )
+      + { location:: lexicon[index][2] },
 
     parseObjectLocal(index, endTokens, inObject):
       local token = lexicon[index];
@@ -723,7 +718,6 @@ local lexer = import './lexer.libsonnet';
         h: h,
         expr: expr,
         cursor:: expr.cursor,
-        line:: lexicon[index][2].line,
       }
       + (if isFunction
          then {

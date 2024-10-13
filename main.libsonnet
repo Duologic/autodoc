@@ -95,11 +95,11 @@ function(file) {
       sortedFields,
       if parents == []
       then
-        md.paragraph(self.getCommentBeforeLine(object.line))
+        md.paragraph(self.getCommentBeforeLine(object.location.line))
         + md.header('Functions', depth)
       else
         md.header('obj ' + std.join('.', parents), depth)
-        + md.paragraph(self.getCommentBeforeLine(object.line))
+        + md.paragraph(self.getCommentBeforeLine(object.location.line))
     ),
 
   // Find fields that can be documented.
@@ -145,7 +145,7 @@ function(file) {
       if 'params' in field
       then name + '(' + a.objectToString(field.params) + ')'
       else name + '()',
-      self.getCommentBeforeLine(field.line),
+      self.getCommentBeforeLine(field.location.line),
       depth,
     ),
 
@@ -156,7 +156,7 @@ function(file) {
       if 'params' in field.expr
       then name + '(' + a.objectToString(field.expr.params) + ')'
       else name + '()',
-      self.getCommentBeforeLine(field.line),
+      self.getCommentBeforeLine(field.location.line),
       depth,
     ),
 

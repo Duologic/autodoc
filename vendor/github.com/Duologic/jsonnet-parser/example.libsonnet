@@ -1,3 +1,3 @@
 local parser = import './parser.libsonnet';
-local file = importstr './example.libsonnet';
+local file = importstr './parser.libsonnet';
 parser.new(file).parse()
