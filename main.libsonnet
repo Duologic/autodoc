@@ -66,18 +66,17 @@ function(file) {
       )
     );
 
-    // 1. prioritize constructor fields
-    // 2. sort others alphabetically
+    // prioritize constructor fields
     local sortedFields =
-      std.sort(
-        filteredFields,
+      std.filter(
         function(field)
-          local name = self.fieldName(field);
-          if std.member(constructorFieldNames, name)
-          then std.find(name, constructorFieldNames)[0]
-          else
-            std.length(constructorFieldNames)
-            + std.find(name, fieldNames)[0] + 1
+          std.member(constructorFieldNames, self.fieldName(field)),
+        filteredFields,
+      )
+      + std.filter(
+        function(field)
+          !std.member(constructorFieldNames, self.fieldName(field)),
+        filteredFields,
       );
 
     std.foldl(
