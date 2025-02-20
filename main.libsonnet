@@ -44,7 +44,7 @@ function(file) {
     then self.findRootObject(ast.expr)
     else error 'no object found',
 
-  renderObject(object, parents=[], depth):
+  renderObject(object, parents=[], depth, noFunctionHeaders=false):
     local fields =
       self.documentableFields(object);
 
@@ -87,11 +87,11 @@ function(file) {
           if std.get(field, 'h', '') == '::'
           then []
           else if field.type == 'field_function'
-          then self.renderFieldFunction(field, parents, depth + 1)
+          then self.renderFieldFunction(field, parents, depth + 1, noFunctionHeaders)
           else if field.expr.type == 'anonymous_function'
-          then self.renderAnonymousFunction(field, parents, depth + 1)
+          then self.renderAnonymousFunction(field, parents, depth + 1, noFunctionHeaders)
           else if field.expr.type == 'object'
-          then self.renderObject(field.expr, parents + [self.fieldName(field)], depth + 1)
+          then self.renderObject(field.expr, parents + [self.fieldName(field)], depth + 1, noFunctionHeaders)
           else error 'unexpected field type'
         ),
       sortedFields,
@@ -141,36 +141,46 @@ function(file) {
       fields,
     ),
 
-  renderFieldFunction(field, parents, depth):
+  renderFieldFunction(field, parents, depth, noheader=false):
     local name = std.join('.', parents + [self.fieldName(field)]);
     self.renderFunction(
       name,
-      if 'params' in field
-      then name + '(' + a.objectToString(field.params) + ')'
-      else name + '()',
+      (
+        if 'params' in field
+        then self.fieldName(field) + '(' + a.objectToString(field.params) + ')'
+        else self.fieldName(field) + '()'
+      ),
       self.getCommentBeforeLine(field.location.line),
       depth,
+      noheader
     )
     + (
       if field.expr.type == 'object'
-      then self.renderObject(field.expr, parents + [name + '()'], depth + 1)[2:]
+      then self.renderObject(field.expr, parents + [name + '()'], depth + 1, true)[2:]
       else []
     )
   ,
 
-  renderAnonymousFunction(field, parents, depth):
+  renderAnonymousFunction(field, parents, depth, noheader=false):
     local name = std.join('.', parents + [self.fieldName(field)]);
     self.renderFunction(
       name,
-      if 'params' in field.expr
-      then name + '(' + a.objectToString(field.expr.params) + ')'
-      else name + '()',
+      (
+        if 'params' in field.expr
+        then self.fieldName(field) + '(' + a.objectToString(field.expr.params) + ')'
+        else self.fieldName(field) + '()'
+      ),
       self.getCommentBeforeLine(field.location.line),
       depth,
+      noheader,
     ),
 
-  renderFunction(name, signature, docstring, depth):
-    md.header('func ' + name, depth)
+  renderFunction(name, signature, docstring, depth, noheader=false):
+    (
+      if noheader
+      then []
+      else md.header('func ' + name, depth)
+    )
     + md.code(signature)
     + md.paragraph(docstring),
 
