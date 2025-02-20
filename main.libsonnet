@@ -153,7 +153,7 @@ function(file) {
     )
     + (
       if field.expr.type == 'object'
-      then self.renderObject(field.expr, parents + [name + '()'], depth + 1)
+      then self.renderObject(field.expr, parents + [name + '()'], depth + 1)[2:]
       else []
     )
   ,
