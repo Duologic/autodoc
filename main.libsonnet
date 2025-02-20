@@ -1,5 +1,5 @@
-local parser = import './vendor/github.com/Duologic/jsonnet-parser/parser.libsonnet';
-local a = import './vendor/github.com/crdsonnet/astsonnet/schema.libsonnet';
+local parser = import 'github.com/Duologic/jsonnet-parser/parser.libsonnet';
+local a = import 'github.com/crdsonnet/astsonnet/schema.libsonnet';
 
 local md = {
   header(string, depth):
@@ -11,7 +11,7 @@ local md = {
     ],
   code(string):
     [
-      '```',
+      '```jsonnet',
       string,
       '```',
       '',
@@ -84,7 +84,9 @@ function(file) {
       function(acc, field)
         acc
         + (
-          if field.type == 'field_function'
+          if std.get(field, 'h', '') == '::'
+          then []
+          else if field.type == 'field_function'
           then self.renderFieldFunction(field, parents, depth + 1)
           else if field.expr.type == 'anonymous_function'
           then self.renderAnonymousFunction(field, parents, depth + 1)
@@ -107,7 +109,8 @@ function(file) {
   documentableFields(object):
     std.filter(
       function(member)
-        std.member(['id', 'string'], member.fieldname.type),
+        std.objectHas(member, 'fieldname')
+        && std.member(['id', 'string'], member.fieldname.type),
       std.get(object, 'members', []),
     ),
 
@@ -147,7 +150,13 @@ function(file) {
       else name + '()',
       self.getCommentBeforeLine(field.location.line),
       depth,
-    ),
+    )
+    + (
+      if field.expr.type == 'object'
+      then self.renderObject(field.expr, parents + [name + '()'], depth + 1)
+      else []
+    )
+  ,
 
   renderAnonymousFunction(field, parents, depth):
     local name = std.join('.', parents + [self.fieldName(field)]);
