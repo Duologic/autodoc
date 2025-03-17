@@ -33,10 +33,10 @@ new(title, file)
 ```
 
 `new` creates a new autodoc parser
-@constructor
-@param {string} - title
-@param {string} - file (example: `imporstr './main.libsonnet'`)
-@returns {object}
+* @constructor
+* @param {string} - title
+* @param {string} - file (example: `imporstr './main.libsonnet'`)
+* @returns {object}
 
 #### func new().render
 
@@ -45,8 +45,8 @@ render(depth=0)
 ```
 
 `render` processes the file into Markdown
-@param {number} - [depth=0]
-@returns {string}
+* @param {number} - [depth=0]
+* @returns {string}
 
 #### func new().generateIndex
 

@@ -280,16 +280,22 @@ local md = {
         '\n',
         std.map(
           function(str)
-            if std.startsWith(str, '// ')
-            then str[3:]
-            else if std.startsWith(str, '//')
-            then str[2:]
-            else if std.startsWith(str, '# ')
-            then str[2:]
-            else if std.startsWith(str, '#')
-            then str[1:]
+            if std.startsWith(str, '@')
+            then '* ' + str
             else str,
-          std.reverse(comments)
+          std.map(
+            function(str)
+              if std.startsWith(str, '// ')
+              then str[3:]
+              else if std.startsWith(str, '//')
+              then str[2:]
+              else if std.startsWith(str, '# ')
+              then str[2:]
+              else if std.startsWith(str, '#')
+              then str[1:]
+              else str,
+            std.reverse(comments)
+          )
         ),
       ),
   },
