@@ -77,6 +77,7 @@ local md = {
                 // drop punctuation marks except dashes
                 function(c)
                   c == '-'
+                  || c == '_'  // kept by GitHub Markdown
                   // keep numbers
                   || (std.codepoint(c) >= 48
                       && std.codepoint(c) <= 57)
