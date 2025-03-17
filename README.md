@@ -1,13 +1,72 @@
-# autodoc
+# Autodoc
 
-This library attempts to generate docs for jsonnet code.
+Autodoc can generate documentation for Jsonnet code, optionally annotated with code comments.
+
+While any comments are processed, the goal is to parse and pretty print [JSDoc](https://jsdoc.app/) annotations.
 
 > [!CAUTION]
 > This is an experimental library.
 
-## Functions
+## Index
 
-### func documentableFields
+* [func new](func-new)
+  * [func new().render](func-newrender)
+  * [func new().generateIndex](func-newgenerateindex)
+  * [func new().findRootObject](func-newfindrootobject)
+  * [func new().renderObject](func-newrenderobject)
+  * [func new().documentableFields](func-newdocumentablefields)
+  * [func new().fieldName](func-newfieldname)
+  * [func new().filterFunctionFields](func-newfilterfunctionfields)
+  * [func new().filterAnonymousFunctionFields](func-newfilteranonymousfunctionfields)
+  * [func new().filterObjectFields](func-newfilterobjectfields)
+  * [func new().renderFieldFunction](func-newrenderfieldfunction)
+  * [func new().renderAnonymousFunction](func-newrenderanonymousfunction)
+  * [func new().renderFunction](func-newrenderfunction)
+  * [func new().getCommentBeforeLine](func-newgetcommentbeforeline)
+
+## Fields
+
+### func new
+
+```jsonnet
+new(title, file)
+```
+
+`new` creates a new autodoc parser
+@constructor
+@param {string} - title
+@param {string} - file (example: `imporstr './main.libsonnet'`)
+@returns {object}
+
+#### func new().render
+
+```jsonnet
+render(depth=0)
+```
+
+`render` processes the file into Markdown
+@param {number} - [depth=0]
+@returns {string}
+
+#### func new().generateIndex
+
+```jsonnet
+generateIndex(lines)
+```
+
+#### func new().findRootObject
+
+```jsonnet
+findRootObject(ast)
+```
+
+#### func new().renderObject
+
+```jsonnet
+renderObject(object, parents=[], depth, noHeader=false)
+```
+
+#### func new().documentableFields
 
 ```jsonnet
 documentableFields(object)
@@ -16,7 +75,7 @@ documentableFields(object)
 Find fields that can be documented.
 This essentially filters out calculated fields in the form of `[<expr>]`.
 
-### func fieldName
+#### func new().fieldName
 
 ```jsonnet
 fieldName(field)
@@ -25,63 +84,44 @@ fieldName(field)
 Get the field name, this assumes fieldname.type is either `string` or `id`.
 Use `documentableFields()` to filter these out.
 
-### func filterAnonymousFunctionFields
-
-```jsonnet
-filterAnonymousFunctionFields(fields)
-```
-
-### func filterFunctionFields
+#### func new().filterFunctionFields
 
 ```jsonnet
 filterFunctionFields(fields)
 ```
 
-### func filterObjectFields
+#### func new().filterAnonymousFunctionFields
+
+```jsonnet
+filterAnonymousFunctionFields(fields)
+```
+
+#### func new().filterObjectFields
 
 ```jsonnet
 filterObjectFields(fields)
 ```
 
-### func findRootObject
-
-```jsonnet
-findRootObject(ast)
-```
-
-### func getCommentBeforeLine
-
-```jsonnet
-getCommentBeforeLine(lineNr)
-```
-
-### func render
-
-```jsonnet
-render(depth=0)
-```
-
-### func renderAnonymousFunction
-
-```jsonnet
-renderAnonymousFunction(field, parents, depth)
-```
-
-### func renderFieldFunction
+#### func new().renderFieldFunction
 
 ```jsonnet
 renderFieldFunction(field, parents, depth)
 ```
 
-### func renderFunction
+#### func new().renderAnonymousFunction
+
+```jsonnet
+renderAnonymousFunction(field, parents, depth)
+```
+
+#### func new().renderFunction
 
 ```jsonnet
 renderFunction(name, signature, docstring, depth)
 ```
 
-### func renderObject
+#### func new().getCommentBeforeLine
 
 ```jsonnet
-renderObject(object, parents=[], depth)
+getCommentBeforeLine(lineNr)
 ```
-

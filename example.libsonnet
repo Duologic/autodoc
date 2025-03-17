@@ -1,6 +1,9 @@
-local n = import './main.libsonnet';
+local autodoc = import './main.libsonnet';
 
-local file = importstr './main.libsonnet';
-
-'# autodoc\n\n'
-+ n(file).render(1)
+{
+  'README.md':
+    autodoc.new(
+      'Autodoc',
+      (importstr './main.libsonnet')
+    ).render(0),
+}
