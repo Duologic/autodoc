@@ -9,20 +9,20 @@ While any comments are processed, the goal is to parse and pretty print [JSDoc](
 
 ## Index
 
-* [func new](func-new)
-  * [func new().render](func-newrender)
-  * [func new().generateIndex](func-newgenerateindex)
-  * [func new().findRootObject](func-newfindrootobject)
-  * [func new().renderObject](func-newrenderobject)
-  * [func new().documentableFields](func-newdocumentablefields)
-  * [func new().fieldName](func-newfieldname)
-  * [func new().filterFunctionFields](func-newfilterfunctionfields)
-  * [func new().filterAnonymousFunctionFields](func-newfilteranonymousfunctionfields)
-  * [func new().filterObjectFields](func-newfilterobjectfields)
-  * [func new().renderFieldFunction](func-newrenderfieldfunction)
-  * [func new().renderAnonymousFunction](func-newrenderanonymousfunction)
-  * [func new().renderFunction](func-newrenderfunction)
-  * [func new().getCommentBeforeLine](func-newgetcommentbeforeline)
+* [func new](#func-new)
+  * [func new().render](#func-newrender)
+  * [func new().generateIndex](#func-newgenerateindex)
+  * [func new().findRootObject](#func-newfindrootobject)
+  * [func new().renderObject](#func-newrenderobject)
+  * [func new().documentableFields](#func-newdocumentablefields)
+  * [func new().fieldName](#func-newfieldname)
+  * [func new().filterFunctionFields](#func-newfilterfunctionfields)
+  * [func new().filterAnonymousFunctionFields](#func-newfilteranonymousfunctionfields)
+  * [func new().filterObjectFields](#func-newfilterobjectfields)
+  * [func new().renderFieldFunction](#func-newrenderfieldfunction)
+  * [func new().renderAnonymousFunction](#func-newrenderanonymousfunction)
+  * [func new().renderFunction](#func-newrenderfunction)
+  * [func new().getCommentBeforeLine](#func-newgetcommentbeforeline)
 
 ## Fields
 

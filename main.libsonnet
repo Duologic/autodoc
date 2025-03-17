@@ -70,6 +70,7 @@ local md = {
         std.foldr(
           std.map,
           [
+            function(title) '#' + title,
             function(title) std.join('', title),  // join array again
             function(title)
               std.filter(
